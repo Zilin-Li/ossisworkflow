@@ -1,31 +1,35 @@
 <template>
   <div id="app">
-    <div id="nav">
-
-    </div>
+    <header>
+      <img id ="logo" alt="Vue logo" src="./assets/ossis_13-06-2012_resized.jpg" >
+    </header>
     <router-view/>
   </div>
 </template>
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+  height:100%;
 }
 
-#nav {
-  padding: 100px;
+header{
+width: auto;
+height:110px;
+background-color: white;
+position:relative;
+padding-left: 5%;
+
+
 }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
+#logo{
+  height: 45%;
+  width:auto;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin:auto;
 }
 
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
+
 </style>

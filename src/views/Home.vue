@@ -1,7 +1,7 @@
 <template>
   <div class="home">
-    <!-- <img alt="Vue logo" src="../assets/logo.png"> -->
-    <StartPage msg="OSSIS Worflow System"/>
+    <!-- <img alt="Vue logo" src="../assets/ossis_13-06-2012_resized.jpg"> -->
+    <StartPage/>
   </div>
 </template>
 
@@ -16,3 +16,16 @@ export default {
   }
 }
 </script>
+
+<style media="screen">
+
+.home{
+  font-family: Helvetica,Arial,"Lucida Family",sans-serif;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: 100%;
+  background-color: #559CB5;
+}
+
+</style>
