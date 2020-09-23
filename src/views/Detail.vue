@@ -19,11 +19,7 @@ export default {
 </script>
 
 <style media="screen">
-/* .jobDetail {
+.jobDetail {
   height: 100%;
-  font-family: Helvetica, Arial, "Lucida Family", sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: #E8E8E8;
-} */
+}
 </style>

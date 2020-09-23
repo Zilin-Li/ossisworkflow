@@ -3,10 +3,10 @@
 
   <label>Job Detail:</label>
   <table class="DetailTable table table-bordered">
-    <thead>
+    <thead class="thead-dark" >
       <tr>
-        <th style="width:30%">Title</th>
-        <th>Details</th>
+        <th style="width:25%">Title</th>
+        <th >Details</th>
       </tr>
     </thead>
     <tbody>
@@ -91,5 +91,10 @@ table {
   background-color: #1C3E50;
   border-radius: 25px;
   font-weight: bold;
+  width:200px;
+
+  margin-left: 80%;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 </style>

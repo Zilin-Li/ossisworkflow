@@ -9,6 +9,9 @@
 
 <style>
 #app {
+  font-family: Helvetica, Arial, "Lucida Family", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   height: 100%;
 }
 

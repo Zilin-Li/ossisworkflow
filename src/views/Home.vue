@@ -19,11 +19,11 @@ export default {
 </script>
 
 <style media="screen">
-/* .home {
+.home {
   height: 100%;
-  font-family: Helvetica, Arial, "Lucida Family", sans-serif;
+  /* font-family: Helvetica, Arial, "Lucida Family", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #559CB5;
-} */
+  background-color: #559CB5; */
+}
 </style>
