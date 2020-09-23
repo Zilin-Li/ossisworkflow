@@ -1,8 +1,8 @@
 <template>
 <div id="app">
-  <header>
-      <img id ="logo" alt="Vue logo" src="./assets/ossis_13-06-2012_resized.jpg" >
-    </header>
+  <!-- <header>
+    <img id="logo" alt="Vue logo" src="./assets/ossis_13-06-2012_resized.jpg">
+  </header> -->
   <router-view />
 </div>
 </template>
@@ -12,24 +12,7 @@
   height: 100%;
 }
 
-/* header {
-  width: auto;
-  height: 110px;
-  background-color: white;
-  position: relative;
-  padding-left: 5%;
-}
-
-#logo {
-  height: 45%;
-  width: auto;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  margin: auto;
-} */
-
-.header {
+/* .header {
   background-color: white;
   display: flex;
   align-items: center;
@@ -39,6 +22,6 @@
   width: 12%;
   margin-top: 20px;
   margin-bottom: 20px;
-  margin-left:5%;
-}
+  margin-left: 5%;
+} */
 </style>

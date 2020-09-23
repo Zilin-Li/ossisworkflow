@@ -1,25 +1,25 @@
 <template>
-<div class="mainPage">
+<div class="jobDetail">
   <Header />
-  <MainPage />
+  <DetailPage/>
 </div>
 </template>
 
 <script>
 import Header from '@/components/Header.vue'
-import MainPage from '@/components/MainPage.vue'
+import DetailPage from '@/components/JobDetail.vue'
 
 export default {
-  name: 'Main',
+  name: 'Detail',
   components: {
-    MainPage,
+    DetailPage,
     Header
   }
 }
 </script>
 
 <style media="screen">
-/* .mainPage {
+/* .jobDetail {
   height: 100%;
   font-family: Helvetica, Arial, "Lucida Family", sans-serif;
   -webkit-font-smoothing: antialiased;

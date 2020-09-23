@@ -1,9 +1,9 @@
 <template>
 <div class="mainPage">
+
   <div class="searchBar">
     <label>Job Number:</label>
     <input class="inputBox form-control" type="text" placeholder="Enter job number">
-
     <input type="button" value="Search" @click="" class="searchBtn btn btn-primary">
   </div>
 
@@ -43,29 +43,30 @@
       </tr>
     </tbody>
   </table>
+
   <div class="btnOptions">
     <input type="button" value="Sync Data To Monday.com" @click="" class="syncBtn btn btn-primary">
     <input type="button" value="Update Status" @click="" class="updateBtn btn btn-primary">
   </div>
-
 
 </div>
 </template>
 
 
 <script>
-
-
-
+export default {
+  beforeCreate: function() {
+       document.body.className = 'mainPage';
+   }
+ }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .mainPage {
   padding: 5%;
-  text-align:  center;
+  text-align: center;
   height: 100%;
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .searchBar {
@@ -73,7 +74,7 @@
   padding-left: 10%;
 }
 
-label{
+label {
   padding-top: 10px;
 }
 
@@ -83,24 +84,25 @@ label{
   margin-right: 2%;
 }
 
-
 table {
   background-color: white;
-  margin:5% auto;
+  margin: 5% auto;
 }
 
-.btnOptions{
+.btnOptions {
   display: flex;
   justify-content: space-around;
   padding-top: 2%;
 }
-.syncBtn,.updateBtn{
+
+.syncBtn,
+.updateBtn {
   width: 20%;
 }
 
-.btn{
+.btn {
   background-color: #1C3E50;
-  border-radius:25px;
+  border-radius: 25px;
   font-weight: bold;
 }
 </style>
