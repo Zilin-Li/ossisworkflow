@@ -1,26 +1,29 @@
 <template>
-  <div class="mainPage">
-
-    <MainPage/>
-  </div>
+<div class="mainPage">
+  <!-- <Header /> -->
+  <MainPage />
+</div>
 </template>
 
 <script>
-// @ is an alias to /src
+// import Header from '@/components/Header.vue'
 import MainPage from '@/components/MainPage.vue'
 
 export default {
   name: 'Main',
   components: {
-    MainPage
+    MainPage,
+    // Header
   }
 }
 </script>
 
 <style media="screen">
-
-.mainPage{
+.mainPage {
   height: 100%;
+  font-family: Helvetica, Arial, "Lucida Family", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #E8E8E8;
 }
-
 </style>

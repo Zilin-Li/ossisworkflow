@@ -1,20 +1,17 @@
 <template>
   <div class="startPage">
     <h1>OSSIS WORKFLOW INTERGRATION SYSTEM</h1>
-    <button type="button" class="getToken btn btn-light btn-lg">Get Start</button>
+    <input type="button" value="Get Start" @click="linkToMain" class="getToken btn btn-light btn-lg">
   </div>
 </template>
 
 
 <script>
+
 // export default {
 //   beforeCreate: function() {
 //        document.body.className = 'startPage';
 //    }
-
-// export default{
-//   name:'startPage'
-// }
 
 </script>
 
@@ -39,6 +36,5 @@ h1{
   border-radius:25px;
   font-size: 1.2vw;
 }
-
 
 </style>
