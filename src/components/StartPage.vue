@@ -9,9 +9,17 @@
 <script>
 export default {
   beforeCreate: function() {
-       document.body.className = 'startPage';
-   }
- }
+    document.body.className = 'startPage';
+  },
+
+  methods: {
+    linkToMain() {
+    this.$router.push({ name: 'MainPage' })
+    }
+  }
+
+  }
+
 </script>
 
 <style scoped>

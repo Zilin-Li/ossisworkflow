@@ -1,4 +1,5 @@
 <template>
+  <!-- Research data translate between different components -->
 <div class="detailPage">
 
   <label>Job Detail:</label>

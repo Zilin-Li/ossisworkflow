@@ -3,9 +3,12 @@
 
   <div class="searchBar">
     <label>Job Number:</label>
-    <input class="inputBox form-control" type="text" placeholder="Enter job number">
-    <input type="button" value="Search" @click="" class="searchBtn btn btn-primary">
+    <input v-model="searchNum" class="inputBox form-control" type="text" placeholder="Enter job number">
+    <input type="button" value="Search" @click="searchJob" class="searchBtn btn btn-primary">
   </div>
+  <!-- searchNum must be int -->
+  <p>{{searchNum}}</p>
+  <p>{{selected}}</p>
 
   <table class="jobTable table table-bordered">
     <thead>
@@ -19,11 +22,11 @@
     </thead>
     <tbody>
       <tr>
-        <td> <a href="#">60545</a> </td>
-        <td>Doe</td>
-        <td>Lily</td>
+        <td> <a href="/jobdetail">{{jobNum}}</a> </td>
+        <td>{{client}}</td>
+        <td>{{patient}}</td>
         <td>
-          <select class="form-control" id="exampleFormControlSelect1">
+          <select v-model="selected" class="form-control" id="exampleFormControlSelect1">
             <option>Awaiting Surgeon Sign Off</option>
             <option>Segmentation</option>
             <option>Design</option>
@@ -57,6 +60,28 @@
 export default {
   beforeCreate: function() {
        document.body.className = 'mainPage';
+   },
+   data() {
+     return{
+       searchNum:null,
+       jobNum:null,
+       client:"clientName",
+       patient:"patientName",
+       selected: ''
+     }
+
+   },
+   methods:{
+     searchJob(){
+       this.jobNum = this.searchNum,
+       this.selected = "Design"
+       //1. sent request to workflowMax with job number
+       //--default value
+       //--client value
+       //2. find out the data user need
+       //3.display
+
+     }
    }
  }
 </script>
