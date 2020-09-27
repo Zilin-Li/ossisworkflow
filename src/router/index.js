@@ -6,6 +6,7 @@ import JobDetail from '../views/Detail.vue'
 
 Vue.use(VueRouter)
 
+
 const routes = [{
     path: '/',
     name: 'StartPage',

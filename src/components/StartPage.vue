@@ -14,6 +14,9 @@ export default {
 
   methods: {
     linkToMain() {
+      //send token request to back-enabled
+      //recive token and store
+      //link to main page 
     this.$router.push({ name: 'MainPage' })
     }
   }

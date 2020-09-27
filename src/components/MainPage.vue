@@ -6,9 +6,14 @@
     <input v-model="searchNum" class="inputBox form-control" type="text" placeholder="Enter job number">
     <input type="button" value="Search" @click="searchJob" class="searchBtn btn btn-primary">
   </div>
+
+
   <!-- searchNum must be int -->
-  <p>{{searchNum}}</p>
-  <p>{{selected}}</p>
+  <!-- <p>{{searchNum}}</p>
+  <p>{{selected}}</p> -->
+
+  <p>{{info}}</p>
+  <!-- <button @click="getInfo">点击获取数据</button> -->
 
   <table class="jobTable table table-bordered">
     <thead>
@@ -49,7 +54,7 @@
 
   <div class="btnOptions">
     <input type="button" value="Sync Data To Monday.com" @click="" class="syncBtn btn btn-primary">
-    <input type="button" value="Update Status" @click="" class="updateBtn btn btn-primary">
+    <input type="button" value="Update Status" @click="updateStatus" class="updateBtn btn btn-primary">
   </div>
 
 </div>
@@ -59,31 +64,144 @@
 <script>
 export default {
   beforeCreate: function() {
-       document.body.className = 'mainPage';
-   },
-   data() {
-     return{
-       searchNum:null,
-       jobNum:null,
-       client:"clientName",
-       patient:"patientName",
-       selected: ''
-     }
+    document.body.className = 'mainPage';
+  },
+  data() {
+    return {
+      searchNum: null,
+      jobNum: null,
+      client: "clientName",
+      patient: "patientName",
+      selected: '',
+      dateOfBirth: '',
+      status: '',
+      statusOfDhf: '',
+      device: '',
+      anatomy: '',
+      pathology: '',
+      sApproach: '',
+      surgeon: '',
+      hospital: '',
+      sDate: '',
+      info: null,
+      mondayAuthor: 'eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjc4MTY5MzcwLCJ1aWQiOjE1NjM4NDA4LCJpYWQiOiIyMDIwLTA5LTEwVDIxOjE0OjMwLjAwMFoiLCJwZXIiOiJtZTp3cml0ZSJ9.JrO-C3NiSJ-vLhmCg0v1N4muBxiYH-wRSTDIWXxgibA',
+      statusId: 'status',
+      dhfStatusID: 'dhf_status',
+      itemId: null
+    }
+  },
 
-   },
-   methods:{
-     searchJob(){
-       this.jobNum = this.searchNum,
-       this.selected = "Design"
-       //1. sent request to workflowMax with job number
-       //--default value
-       //--client value
-       //2. find out the data user need
-       //3.display
 
-     }
-   }
- }
+
+  methods: {
+    searchJob() {
+      this.jobNum = this.searchNum,
+        this.selected = "Design"
+      //1. sent request to workflowMax with job number
+      //--default value
+      //--client value
+      //2. find out the data user need
+      //3.display
+    },
+
+    // getInfo() {
+    //   //test sent request to Monday.com
+    //   let query = '{ boards (limit:5) {name id} }';
+    //
+    //   fetch("https://api.monday.com/v2", {
+    //       method: 'post',
+    //       headers: {
+    //         'Content-Type': 'application/json',
+    //         'Authorization': this.mondayAuthor
+    //       },
+    //       body: JSON.stringify({
+    //         'query': query
+    //       })
+    //     })
+    //     .then(res => res.json())
+    //     .then(res => this.info = JSON.stringify(res, null, 2));
+    // },
+
+    // syncToMonday(){
+    //
+    //
+    // },
+    updateStatus() {
+      ////Check whether the jobID is exist.
+      // let query = '{ items_by_column_values(board_id: 732358871, column_id: "name", column_value: "60545", state: active) {id name}}';
+      //
+      // fetch("https://api.monday.com/v2", {
+      //     method: 'post',
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //       'Authorization': this.mondayAuthor
+      //     },
+      //     body: JSON.stringify({
+      //       'query': query
+      //     })
+      //   })
+      //   .then(res => res.json())
+      //   .then(res => {
+      //     this.info = res.data.items_by_column_values
+      //     this.itemId = this.info[0].id
+      //     //if the length==1,means the id is exist.if length==0, means the id is not exist.
+      //     // console.log(this.info.length)
+      //     console.log(this.info[0].id)
+      //   });
+
+      // job id does not exist
+
+
+      ////job Id exist
+
+      ////Update status.
+      // let query = 'mutation($columnVals: JSON!) {change_column_value (board_id: 732358871, item_id: 763955795, column_id: "status", value: $columnVals) {id}}'
+      // let vars = {
+      //   "columnVals": JSON.stringify({
+      //     "label": "Design",
+      //   })
+      // };
+      // fetch("https://api.monday.com/v2", {
+      //     method: 'post',
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //       'Authorization': this.mondayAuthor
+      //     },
+      //     body: JSON.stringify({
+      //       'query': query,
+      //       'variables': JSON.stringify(vars)
+      //     })
+      //   })
+      //   .then(res => res.json())
+      //   .then(res => {
+      //   console.log(res)
+      //   });
+
+      ////Update DHFstatus.
+      // let query = 'mutation($columnVals: JSON!) {change_column_value (board_id: 732358871, item_id: 763955795, column_id: "dhf_status", value: $columnVals) {id}}'
+      // let vars = {
+      //   "columnVals": JSON.stringify({
+      //     "label": "Section 5 Complete",
+      //   })
+      // };
+      // fetch("https://api.monday.com/v2", {
+      //     method: 'post',
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //       'Authorization': this.mondayAuthor
+      //     },
+      //     body: JSON.stringify({
+      //       'query': query,
+      //       'variables': JSON.stringify(vars)
+      //     })
+      //   })
+      //   .then(res => res.json())
+      //   .then(res => {
+      //   console.log(res)
+      //   });
+  }
+}
+}
 </script>
 
 <style scoped>
