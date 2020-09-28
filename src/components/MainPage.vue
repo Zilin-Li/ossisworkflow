@@ -53,7 +53,7 @@
   </table>
 
   <div class="btnOptions">
-    <input type="button" value="Sync Data To Monday.com" @click="" class="syncBtn btn btn-primary">
+    <input type="button" value="Sync Data To Monday.com" @click="syncToMonday" class="syncBtn btn btn-primary">
     <input type="button" value="Update Status" @click="updateStatus" class="updateBtn btn btn-primary">
   </div>
 
@@ -122,10 +122,57 @@ export default {
     //     .then(res => this.info = JSON.stringify(res, null, 2));
     // },
 
-    // syncToMonday(){
-    //
-    //
-    // },
+    syncToMonday() {
+////Creat item to Monday
+        // let query5 = 'mutation ($myItemName: String!, $columnVals: JSON!) { create_item (board_id: 732358871,item_name:$myItemName, column_values:$columnVals) { id } }';
+        // let vars = {
+        //   "myItemName": "test!",
+        //   "columnVals": JSON.stringify({
+        //     "status": {
+        //       "label": "Design"
+        //     }
+        //   })
+        // };
+        //
+        //
+        // fetch("https://api.monday.com/v2", {
+        //     method: 'post',
+        //     headers: {
+        //       'Content-Type': 'application/json',
+        //       'Authorization': this.mondayAuthor
+        //     },
+        //     body: JSON.stringify({
+        //       'query': query5,
+        //       'variables': JSON.stringify(vars)
+        //     })
+        //   })
+        //   .then(res => res.json())
+        //   .then(res => console.log(JSON.stringify(res, null, 2)));
+      // let query = 'mutation($columnVals: JSON!) {creat_item (board_id: 732358871, group_id:\"topics\", item_name: \"test\", column_values: $columnVals) {id}}'
+      // let vars = {
+      //   "columnVals": JSON.stringify({
+      //     "text4": "User1",
+      //     // "date_14":2016-1-2,
+      //     "label": "Design",
+      //   })
+      // };
+      // fetch("https://api.monday.com/v2", {
+      //     method: 'post',
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //       'Authorization': this.mondayAuthor
+      //     },
+      //     body: JSON.stringify({
+      //       'query': query,
+      //       'variables': JSON.stringify(vars)
+      //     })
+      //   })
+      //   .then(res => res.json())
+      //   .then(res => {
+      //     console.log(res)
+      //   });
+
+    },
     updateStatus() {
       ////Check whether the jobID is exist.
       // let query = '{ items_by_column_values(board_id: 732358871, column_id: "name", column_value: "60545", state: active) {id name}}';
@@ -199,8 +246,8 @@ export default {
       //   .then(res => {
       //   console.log(res)
       //   });
+    }
   }
-}
 }
 </script>
 
