@@ -12,11 +12,19 @@ export default {
     document.body.className = 'startPage';
   },
 
+  data(){
+    return{
+      workflowMaxAuth:""
+    }
+
+  },
+
   methods: {
     linkToMain() {
       //send token request to back-enabled
+
       //recive token and store
-      //link to main page 
+      //link to main page
     this.$router.push({ name: 'MainPage' })
     }
   }

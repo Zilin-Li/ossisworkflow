@@ -27,25 +27,51 @@
     </thead>
     <tbody>
       <tr>
-        <td> <a href="/jobdetail">{{jobNum}}</a> </td>
-        <td>{{client}}</td>
-        <td>{{patient}}</td>
+        <td> <router-link to="/jobdetail"> {{this.$root.jobNum}}</router-link></td>
+        <td>{{this.$root.client}}</td>
+        <td>{{this.$root.patient}}</td>
         <td>
-          <select v-model="selected" class="form-control" id="exampleFormControlSelect1">
-            <option>Awaiting Surgeon Sign Off</option>
+          <select v-model="this.$root.statuSelected" class="form-control" >
+            <option>Awaiting Scans/Prescription Form</option>
             <option>Segmentation</option>
             <option>Design</option>
-            <option>Design review</option>
-            <option>Design Signed Off</option>
+            <option>Design Review</option>
+            <option>Design Sign Off</option>
+            <option>Awaiting Funding</option>
+            <option>Manufacturing</option>
+            <option>Machining</option>
+            <option>Cleaning</option>
+            <option>Coating</option>
+            <option>At OSSIS</option>
+            <option>Shipped</option>
+            <option>At Hospital</option>
+            <option>Awaiting Post-Op</option>
+            <option>Awaiting Payment</option>
+            <option>On Hold</option>
+            <option>Cancelled</option>
+            <option>Invoiced</option>
+            <option>Completed - Pelvis Implants</option>
+            <option>Completed(Other)</option>
           </select>
         </td>
         <td>
-          <select class="form-control" id="exampleFormControlSelect1">
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
+          <select v-model="this.$root.DHFstatuSelected" class="form-control">
+            <option>Section 1 For Review</option>
+            <option>Section 2 For Review</option>
+            <option>Section 3 For Review</option>
+            <option>Section 4 For Review</option>
+            <option>Section 5 For Review</option>
+            <option>Section 1 In Progress</option>
+            <option>Section 2 In Progress</option>
+            <option>Section 3 In Progress</option>
+            <option>Section 4 In Progress</option>
+            <option>Section 5 In Progress</option>
+            <option>Section 1 Complete</option>
+            <option>Section 2 Complete</option>
+            <option>Section 3 Complete</option>
+            <option>Section 4 Complete</option>
+            <option>Section 5 Complete</option>
+            <option>Ready For Scanning</option>
           </select>
         </td>
       </tr>
@@ -62,6 +88,7 @@
 
 
 <script>
+
 export default {
   beforeCreate: function() {
     document.body.className = 'mainPage';
@@ -69,22 +96,21 @@ export default {
   data() {
     return {
       searchNum: null,
-      jobNum: null,
-      client: "clientName",
-      patient: "patientName",
-      selected: '',
-      dateOfBirth: '',
-      status: '',
-      statusOfDhf: '',
-      device: '',
-      anatomy: '',
-      pathology: '',
-      sApproach: '',
-      surgeon: '',
-      hospital: '',
-      sDate: '',
+      // jobNum: null,
+      // client: '',
+      // patient: '',
+      // statuSelected: '',
+      // DHFstatuSelected:'',
+      // dateOfBirth: '',
+      // device: '',
+      // anatomy: '',
+      // pathology: '',
+      // sApproach: '',
+      // hospital: '',
+      // sDate: '',
       info: null,
       mondayAuthor: 'eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjc4MTY5MzcwLCJ1aWQiOjE1NjM4NDA4LCJpYWQiOiIyMDIwLTA5LTEwVDIxOjE0OjMwLjAwMFoiLCJwZXIiOiJtZTp3cml0ZSJ9.JrO-C3NiSJ-vLhmCg0v1N4muBxiYH-wRSTDIWXxgibA',
+      workflowMaxAuth:'',
       statusId: 'status',
       dhfStatusID: 'dhf_status',
       itemId: null
@@ -95,13 +121,29 @@ export default {
 
   methods: {
     searchJob() {
-      this.jobNum = this.searchNum,
-        this.selected = "Design"
-      //1. sent request to workflowMax with job number
-      //--default value
-      //--client value
-      //2. find out the data user need
-      //3.display
+      this.displayJob();
+  },
+
+  goDetailPage(){
+
+  },
+
+    displayJob(){
+      //get job number from user input
+      this.$root.jobNum =this.searchNum,
+
+      //get job details from workflow max
+      this.$root.client= "Mr.D"
+      this.$root.patient="Alice",
+      this.$root.statuSelected= "Shipped",
+      this.$root.DHFstatuSelected="Section 1 For Review",
+      this.$root.dateOfBirth= "2020-06-03",
+      this.$root.device= "Hemi-Pelvis",
+      this.$root.anatomy= "Anatomy1",
+      this.$root.pathology="Pathology2",
+      this.$root.sApproach= "Approach1",
+      this.$root.hospital= "CHCH Hospital",
+      this.$root.sDate= "2021-09-15"
     },
 
     // getInfo() {
@@ -123,55 +165,32 @@ export default {
     // },
 
     syncToMonday() {
-////Creat item to Monday
-        // let query5 = 'mutation ($myItemName: String!, $columnVals: JSON!) { create_item (board_id: 732358871,item_name:$myItemName, column_values:$columnVals) { id } }';
-        // let vars = {
-        //   "myItemName": "test!",
-        //   "columnVals": JSON.stringify({
-        //     "status": {
-        //       "label": "Design"
-        //     }
-        //   })
-        // };
-        //
-        //
-        // fetch("https://api.monday.com/v2", {
-        //     method: 'post',
-        //     headers: {
-        //       'Content-Type': 'application/json',
-        //       'Authorization': this.mondayAuthor
-        //     },
-        //     body: JSON.stringify({
-        //       'query': query5,
-        //       'variables': JSON.stringify(vars)
-        //     })
-        //   })
-        //   .then(res => res.json())
-        //   .then(res => console.log(JSON.stringify(res, null, 2)));
-      // let query = 'mutation($columnVals: JSON!) {creat_item (board_id: 732358871, group_id:\"topics\", item_name: \"test\", column_values: $columnVals) {id}}'
-      // let vars = {
-      //   "columnVals": JSON.stringify({
-      //     "text4": "User1",
-      //     // "date_14":2016-1-2,
-      //     "label": "Design",
-      //   })
-      // };
-      // fetch("https://api.monday.com/v2", {
-      //     method: 'post',
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //       'Authorization': this.mondayAuthor
-      //     },
-      //     body: JSON.stringify({
-      //       'query': query,
-      //       'variables': JSON.stringify(vars)
-      //     })
-      //   })
-      //   .then(res => res.json())
-      //   .then(res => {
-      //     console.log(res)
-      //   });
+//Creat item to Monday
+        let query5 = 'mutation ($myItemName: String!, $columnVals: JSON!) { create_item (board_id: 736609738,item_name:$myItemName, column_values:$columnVals) { id } }';
+        let vars = {
+          "myItemName": "test2",
+          "columnVals": JSON.stringify({
+            "status": {
+              "label": "Design"
+            },
+             "patient_name": "User1",
+          })
+        };
 
+
+        fetch("https://api.monday.com/v2", {
+            method: 'post',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': this.mondayAuthor
+            },
+            body: JSON.stringify({
+              'query': query5,
+              'variables': JSON.stringify(vars)
+            })
+          })
+          .then(res => res.json())
+          .then(res => console.log(JSON.stringify(res, null, 2)));
     },
     updateStatus() {
       ////Check whether the jobID is exist.
