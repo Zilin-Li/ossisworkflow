@@ -62,7 +62,7 @@
       </tr>
     </tbody>
   </table>
-  <input type="button" value="Back" @click="" class="backBtn btn btn-primary">
+  <router-link v-bind:to="'/mainpage'" class="btn btn-primary">Back</router-link>
 </div>
 </template>
 
