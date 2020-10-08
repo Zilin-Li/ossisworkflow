@@ -89,11 +89,11 @@ export default {
   },
   data() {
     return {
-      searchNum: '',
+      searchNum: '', //this number use to send to backend
+      // jobNum:'',// this number use to display.
       statuSelected: this.$root.statuSelected,
       DHFstatuSelected: this.$root.DHFstatuSelected,
-      mondayAuthor: 'eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjc4MTY5MzcwLCJ1aWQiOjE1NjM4NDA4LCJpYWQiOiIyMDIwLTA5LTEwVDIxOjE0OjMwLjAwMFoiLCJwZXIiOiJtZTp3cml0ZSJ9.JrO-C3NiSJ-vLhmCg0v1N4muBxiYH-wRSTDIWXxgibA',
-      workflowMaxAuth: 'eyJhbGciOiJSUzI1NiIsImtpZCI6IjFDQUY4RTY2NzcyRDZEQzAyOEQ2NzI2RkQwMjYxNTgxNTcwRUZDMTkiLCJ0eXAiOiJKV1QiLCJ4NXQiOiJISy1PWm5jdGJjQW8xbkp2MENZVmdWY09fQmsifQ.eyJuYmYiOjE2MDE1MTIyNTUsImV4cCI6MTYwMTUxNDA1NSwiaXNzIjoiaHR0cHM6Ly9pZGVudGl0eS54ZXJvLmNvbSIsImF1ZCI6Imh0dHBzOi8vaWRlbnRpdHkueGVyby5jb20vcmVzb3VyY2VzIiwiY2xpZW50X2lkIjoiNTBGOTQ4RDA1QjRFNEE3ODk3RkE0MjMwOEJBMUU2MzUiLCJzdWIiOiIxYzM0ODA4NmY1OGI1ODA1YjRmMzIyMjdhMDU2YmRkNiIsImF1dGhfdGltZSI6MTYwMTUxMjI0NSwieGVyb191c2VyaWQiOiI3NDYyYTgwMy1kNjNjLTQ2ZDgtYWNhMC1hOTBkM2I4YWRjMDYiLCJnbG9iYWxfc2Vzc2lvbl9pZCI6ImFkNjZkZTUxYWJiMzQ0ZjBhOGI0MDQzOGVmM2I4ZGEwIiwianRpIjoiNDM1Y2JmODkyOWY3MDUzNWM5YjYxNDE1ODA3YzliZDAiLCJhdXRoZW50aWNhdGlvbl9ldmVudF9pZCI6ImVlNDMwMTRjLTQ2ZmItNDFjMi04NzZjLTJlYjU5MGExOGVlMCIsInNjb3BlIjoid29ya2Zsb3dtYXgifQ.OdgXIGcsX2FVI139KfHyArEJnyBglExl7G4jVytD7GX6txH4KKCD9xcs46eSm_RjnZ0lFNlCuHsg8O5toHEB4j8zLNhZ6KnEvzj8sKj-rvjFsxuVD3ESyqo36fwwPvGWEiUf3w7BxYjRWG7WJ_6JsKOyR8WtFrYXz8_5wQ747maqE6MTQtgwn_G--1jv1P4Id6z_-BtkKKdM2DskBZlozR6RyBy9FJqKVV7uctEHj5Y0OHSQNyPEmI7eWs5eIQgUM0X_6bcM5flWDDLXEpdbigj8vpbkSgQUTiiwhh_xnid26JrMmG45f8YpFQ2Tx2PoKVahWtgJCbmhFVOqfs7poQ',
+      mondayAuthor: '*****', // This monday.com token.
       info: '',
       itemId: '',
       jobExist: null,
@@ -116,12 +116,31 @@ export default {
   methods: {
     searchJob() {
       //send request to back-send
+      let requestUrl="http://localhost/api/test?jobId=" + this.searchNum
+
+      fetch(requestUrl)
+      .then(res =>res.json())
+      .then(res => {
+        this.$root.jobNum=res.jobId
+        this.$root.client =res.client
+        this.statuSelected = this.$root.statuSelected =res.state
+        this.DHFstatuSelected = this.$root.DHFstatuSelected=res.DHFStatus
+
+        this.$root.patient =res.patienName
+        // this.$root.dateOfBirth = res.dateOfBirth
+        this.$root.device = res.deviceType
+        this.$root.anatomy = res.anatomy
+        this.$root.pathology = res.pathology
+        this.$root.sApproach = res.surgicalApproach
+        this.$root.hospital = res.hospital
+        // this.$root.sDate = res.surgeryDate
+      })
 
       //if jobNum exist in worflow max, get job detail in JASON. format
       //Assign values to global variables
 
       //Display on user interface
-      this.displayJob();
+      // this.displayJob();
 
       //If jobNum isnot exist in worflow max, through error massage
 
@@ -132,7 +151,7 @@ export default {
       this.isDisabled = true
 
       //Check job number whether exist.
-      let query = '{ items_by_column_values(board_id: 736609738, column_id: "name", column_value: "' + this.searchNum + '", state: active) {id name}}';
+      let query = '{ items_by_column_values(board_id: 736609738, column_id: "name", column_value: "' + this.$root.jobNum + '", state: active) {id name}}';
       fetch("https://api.monday.com/v2", {
           method: 'post',
           headers: {
@@ -220,35 +239,33 @@ export default {
         })
         .then(res => res.json())
         .then(res => console.log(JSON.stringify(res, null, 2)))
-
-
     },
 
 
 
-    displayJob() {
-      //get job details from workflow max
-        this.$root.client = "Mr.D",
-        this.$root.patient = "Alice",
-        this.$root.statuSelected = "Shipped",
-        this.$root.DHFstatuSelected = "Section 1 For Review",
-        this.$root.dateOfBirth = "2020-06-03",
-        this.$root.device = "Hemi-Pelvis",
-        this.$root.anatomy = "Anatomy1",
-        this.$root.pathology = "Pathology2",
-        this.$root.sApproach = "Approach1",
-        this.$root.hospital = "Hospital",
-        this.$root.sDate = "2021-09-15",
-
-        //get job number from user input
-        this.$root.jobNum = this.searchNum,
-        //get job status from global variable
-        this.statuSelected = this.$root.statuSelected,
-        this.DHFstatuSelected = this.$root.DHFstatuSelected
-    },
+    // displayJob() {
+    //   //get job details from workflow max
+    //     this.$root.client = "Mr.D",
+    //     this.$root.patient = "Alice",
+    //     this.$root.statuSelected = "Shipped",
+    //     this.$root.DHFstatuSelected = "Section 1 For Review",
+    //     this.$root.dateOfBirth = "2020-06-03",
+    //     this.$root.device = "Hemi-Pelvis",
+    //     this.$root.anatomy = "Anatomy1",
+    //     this.$root.pathology = "Pathology2",
+    //     this.$root.sApproach = "Approach1",
+    //     this.$root.hospital = "Hospital",
+    //     this.$root.sDate = "2021-09-15",
+    //
+    //     //get job number from user input
+    //     this.$root.jobNum = this.searchNum,
+    //     //get job status from global variable
+    //     this.statuSelected = this.$root.statuSelected,
+    //     this.DHFstatuSelected = this.$root.DHFstatuSelected
+    // },
 
     updateStatus() {
-      let query1 = '{ items_by_column_values(board_id: 736609738, column_id: "name", column_value: "' + this.searchNum + '", state: active) {id}}';
+      let query1 = '{ items_by_column_values(board_id: 736609738, column_id: "name", column_value: "' + this.$root.jobNum + '", state: active) {id}}';
       fetch("https://api.monday.com/v2", {
           method: 'post',
           headers: {

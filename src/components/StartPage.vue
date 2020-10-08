@@ -16,7 +16,6 @@ export default {
     return{
       workflowMaxAuth:""
     }
-
   },
 
   methods: {
@@ -25,7 +24,9 @@ export default {
 
       //recive token and store
       //link to main page
-    this.$router.push({ name: 'MainPage' })
+    // this.$router.push({ name: 'MainPage' })
+
+    window.location = 'http://localhost/authorization.php'
     }
   }
 
