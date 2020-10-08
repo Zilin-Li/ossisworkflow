@@ -6,8 +6,7 @@
     <input v-model="searchNum" class="inputBox form-control" type="text" placeholder="Enter job number">
     <input type="button" value="Search" @click="searchJob" class="searchBtn btn btn-primary">
   </div>
-  <!-- <p>{{info}}</p> -->
-  <!-- <button @click="searchJobInMonday">点击获取数据</button> -->
+  <p>{{info}}</p>
   <table class="jobTable table table-bordered">
     <thead>
       <tr>
@@ -74,7 +73,7 @@
   </table>
 <p>{{userMassage}}</p>
   <div class="btnOptions">
-    <input type="button" :disabled='isDisabled' value="Data synchronization" @click="syncToMonday" class="syncBtn btn btn-primary">
+    <input type="button" value="Data synchronization" @click="syncToMonday" class="syncBtn btn btn-primary">
     <!-- <input type="button" value="Update Status" @click="updateStatus" class="updateBtn btn btn-primary"> -->
   </div>
 
@@ -89,43 +88,30 @@ export default {
   },
   data() {
     return {
-      searchNum: '', //this number use to send to backend
-      // jobNum:'',// this number use to display.
+      searchNum: '',
       statuSelected: this.$root.statuSelected,
       DHFstatuSelected: this.$root.DHFstatuSelected,
-      mondayAuthor: '88',
+      mondayAuthor: '',
       info: '',
-      itemId: '',
-      jobExist: null,
-      jobId:'',
       userMassage:'',
-      isDisabled:false
-      // client: '',
-      // patient: '',
-      // dateOfBirth: '',
-      // device: '',
-      // anatomy: '',
-      // pathology: '',
-      // sApproach: '',
-      // hospital: '',
-      // sDate: '',
-
+      jobId:''
     }
   },
 
   methods: {
     searchJob() {
-      //send request to back-send
+      //send request to back-end with search job number
       let requestUrl="http://localhost/api/test?jobId=" + this.searchNum
 
       fetch(requestUrl)
+      //if jobNum exist in worflow max, get job detail in JSON. format
       .then(res =>res.json())
+      //Assign values to global variables
       .then(res => {
         this.$root.jobNum=res.jobId
         this.$root.client =res.client
         this.statuSelected = this.$root.statuSelected =res.state
         this.DHFstatuSelected = this.$root.DHFstatuSelected=res.DHFStatus
-
         this.$root.patient =res.patienName
         this.$root.dateOfBirth = res.dateOfBirth
         this.$root.device = res.deviceType
@@ -135,70 +121,14 @@ export default {
         this.$root.hospital = res.hospital
         this.$root.sDate = res.surgeryDate
       })
-
-      //if jobNum exist in worflow max, get job detail in JASON. format
-      //Assign values to global variables
-
-      //Display on user interface
+      //Display on user interface --- data test
       // this.displayJob();
 
       //If jobNum isnot exist in worflow max, through error massage
-
-    },
-
-    syncToMonday() {
-
-      this.isDisabled = true
-
-      //Check job number whether exist.
-      let query = '{ items_by_column_values(board_id: 736609738, column_id: "name", column_value: "' + this.$root.jobNum + '", state: active) {id name}}';
-      fetch("https://api.monday.com/v2", {
-          method: 'post',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': this.mondayAuthor
-          },
-          body: JSON.stringify({
-            'query': query
-          })
-        })
-        .then(res => res.json())
-        .then(res => {
-        //if the length==1,means the id is exist.if length==0, means the id is not exist.
-          this.info = res.data.items_by_column_values.length
-
-          //if the jobNum not exist on monday.com
-          if(this.info == 0){
-            //create a new item on monday
-            this.creatItemToMonday()
-            this.userMassage = "Created a new item on Monday"
-            console.log("Created a new item on Monday")
-            this.isDisabled = false
-
-            // if the status changs, also update status to worflowmax.
-
-          }else{
-            //else if the jobNum exist on monday.com
-            //Update the job detail on monday.com
-            this.updateStatus()
-            this.isDisabled = false
-
-            // if the status changs, also update status to worflowmax.
-            this.userMassage = "Updated the item on Monday"
-            console.log("Update the item on Monday")
-          }
-
-
-        })
-        .then()
-
-      this.$root.statuSelected = this.statuSelected
-      this.$root.DHFstatuSelected = this.DHFstatuSelected
     },
 
     creatItemToMonday() {
       //Creat item to Monday
-
       let query5 = 'mutation ($myItemName: String!, $columnVals: JSON!) { create_item (board_id: 736609738,item_name:$myItemName, column_values:$columnVals) { id } }';
       let vars = {
         "myItemName": this.$root.jobNum,
@@ -241,29 +171,6 @@ export default {
         .then(res => console.log(JSON.stringify(res, null, 2)))
     },
 
-
-
-    // displayJob() {
-    //   //get job details from workflow max
-    //     this.$root.client = "Mr.D",
-    //     this.$root.patient = "Alice",
-    //     this.$root.statuSelected = "Shipped",
-    //     this.$root.DHFstatuSelected = "Section 1 For Review",
-    //     this.$root.dateOfBirth = "2020-06-03",
-    //     this.$root.device = "Hemi-Pelvis",
-    //     this.$root.anatomy = "Anatomy1",
-    //     this.$root.pathology = "Pathology2",
-    //     this.$root.sApproach = "Approach1",
-    //     this.$root.hospital = "Hospital",
-    //     this.$root.sDate = "2021-09-15",
-    //
-    //     //get job number from user input
-    //     this.$root.jobNum = this.searchNum,
-    //     //get job status from global variable
-    //     this.statuSelected = this.$root.statuSelected,
-    //     this.DHFstatuSelected = this.$root.DHFstatuSelected
-    // },
-
     updateStatus() {
       let query1 = '{ items_by_column_values(board_id: 736609738, column_id: "name", column_value: "' + this.$root.jobNum + '", state: active) {id}}';
       fetch("https://api.monday.com/v2", {
@@ -281,8 +188,8 @@ export default {
         //Get the job ID in monday.com
           this.jobId = res.data.items_by_column_values[0].id
           let query = 'mutation ($columnVals: JSON!) { change_multiple_column_values (board_id: 736609738,item_id:' + this.jobId + ', column_values:$columnVals) { id } }';
+          // Consider that user may change other values on Workfolow Max, so here we update all the data in Monday.com.
           let vars = {
-            // "$myItemID": parseInt(this.$root.jobNum),
             "columnVals": JSON.stringify({
               "patient_name": this.$root.patient,
               "dob": {
@@ -321,9 +228,79 @@ export default {
               .then(res => res.json())
               .then(res => console.log(JSON.stringify(res, null, 2)));
         })
-      }
+      },
 
 
+    syncToMonday() {
+      //Check job number whether exist.
+      let query = '{ items_by_column_values(board_id: 736609738, column_id: "name", column_value: "' + this.$root.jobNum + '", state: active) {id name}}';
+      fetch("https://api.monday.com/v2", {
+          method: 'post',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': this.mondayAuthor
+          },
+          body: JSON.stringify({
+            'query': query
+          })
+        })
+        .then(res => res.json())
+        .then(res => {
+        //if the length==1,means the id is exist.if length==0, means the id is not exist.
+          this.info = res.data.items_by_column_values.length
+
+          //if the jobNum not exist on monday.com
+          if(this.info == 0){
+            //create a new item on monday
+            this.creatItemToMonday()
+            this.userMassage = "Created a new item on Monday"
+            // if the status changs,update status to worflowmax.
+            if(this.$root.statuSelected != this.statuSelected){
+
+
+
+            }
+          }else{
+            //If the jobNum exist on monday.com, update the job detail on monday.com
+            this.updateStatus()
+            this.userMassage = "Updated the item on Monday"
+
+            // if the status changs,update status to worflowmax.
+            if(this.$root.statuSelected != this.statuSelected){
+            // update status to worflowmax.
+
+            }
+          }
+        })
+        .then()
+
+      this.$root.statuSelected = this.statuSelected
+      this.$root.DHFstatuSelected = this.DHFstatuSelected
+    },
+
+
+
+//Testing-------------------------------------------------------------------------------
+    // displayJob() {
+    //   //get job details from workflow max
+    //     this.$root.client = "Mr.D",
+    //     this.$root.patient = "Alice",
+    //     this.$root.statuSelected = "Shipped",
+    //     this.$root.DHFstatuSelected = "Section 1 For Review",
+    //     this.$root.dateOfBirth = "2020-06-03",
+    //     this.$root.device = "Hemi-Pelvis",
+    //     this.$root.anatomy = "Anatomy1",
+    //     this.$root.pathology = "Pathology2",
+    //     this.$root.sApproach = "Approach1",
+    //     this.$root.hospital = "Hospital",
+    //     this.$root.sDate = "2021-09-15",
+    //
+    //     //get job number from user input
+    //     this.$root.jobNum = this.searchNum,
+    //     //get job status from global variable
+    //     this.statuSelected = this.$root.statuSelected,
+    //     this.DHFstatuSelected = this.$root.DHFstatuSelected
+    // },
 
   //Update status.
     // let query = 'mutation($columnVals: JSON!) {change_column_value (board_id: 732358871, item_id: 763955795, column_id: "status", value: $columnVals) {id}}'
@@ -370,6 +347,8 @@ export default {
   //     .then(res => {
   //     console.log(res)
   //     });
+
+//Testing -------------------------------------------------------------------------------
     }
   }
 </script>
