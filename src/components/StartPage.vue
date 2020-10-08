@@ -1,7 +1,7 @@
 <template>
 <div class="startPage">
   <h1>OSSIS WORKFLOW INTERGRATION SYSTEM</h1>
-  <input type="button" value="Get Start" @click="linkToMain" class="getToken btn btn-light btn-lg">
+  <input type="button" value="Start" @click="linkToMain" class="getToken btn btn-light btn-lg">
 </div>
 </template>
 

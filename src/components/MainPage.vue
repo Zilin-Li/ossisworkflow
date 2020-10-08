@@ -93,7 +93,7 @@ export default {
       // jobNum:'',// this number use to display.
       statuSelected: this.$root.statuSelected,
       DHFstatuSelected: this.$root.DHFstatuSelected,
-      mondayAuthor: '*****', // This monday.com token.
+      mondayAuthor: '88',
       info: '',
       itemId: '',
       jobExist: null,
@@ -127,13 +127,13 @@ export default {
         this.DHFstatuSelected = this.$root.DHFstatuSelected=res.DHFStatus
 
         this.$root.patient =res.patienName
-        // this.$root.dateOfBirth = res.dateOfBirth
+        this.$root.dateOfBirth = res.dateOfBirth
         this.$root.device = res.deviceType
         this.$root.anatomy = res.anatomy
         this.$root.pathology = res.pathology
         this.$root.sApproach = res.surgicalApproach
         this.$root.hospital = res.hospital
-        // this.$root.sDate = res.surgeryDate
+        this.$root.sDate = res.surgeryDate
       })
 
       //if jobNum exist in worflow max, get job detail in JASON. format
