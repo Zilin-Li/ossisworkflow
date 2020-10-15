@@ -6,7 +6,7 @@
     <input v-model="searchNum" class="inputBox form-control" type="text" placeholder="Enter job number">
     <input type="button" value="Search" @click="searchJob" class="searchBtn btn btn-primary">
   </div>
-  <p>{{info}}</p>
+  <!-- <p>{{info}}</p> -->
   <table class="jobTable table table-bordered">
     <thead>
       <tr>
@@ -120,6 +120,7 @@ export default {
         this.$root.sApproach = res.surgicalApproach
         this.$root.hospital = res.hospital
         this.$root.sDate = res.surgeryDate
+        this.$root.dhfStatusUUID =res.DHFStatusUUID
       })
       //Display on user interface --- data test
       // this.displayJob();
@@ -171,7 +172,7 @@ export default {
         .then(res => console.log(JSON.stringify(res, null, 2)))
     },
 
-    updateStatus() {
+    updateToMonday() {
       let query1 = '{ items_by_column_values(board_id: 736609738, column_id: "name", column_value: "' + this.$root.jobNum + '", state: active) {id}}';
       fetch("https://api.monday.com/v2", {
           method: 'post',
@@ -230,8 +231,20 @@ export default {
         })
       },
 
+      updateToWM(){
+        let requestUrl="http://localhost/api/update?jobId=" + this.searchNum +"&Status="+this.statuSelected+"&DHFStatus="+this.DHFstatuSelected+"&dhfStatusUUID="+this.$root.dhfStatusUUID
+
+          // let requestUrl ="http://localhost/api/update?jobId=60550&Status=test&DHFStatus=test2"
+        fetch(requestUrl)
+        .then(res =>console.log(res))
+        // .then(res => console.log(JSON.stringify(res, null, 2)));
+      },
+
 
     syncToMonday() {
+      this.updateToWM()
+
+
       //Check job number whether exist.
       let query = '{ items_by_column_values(board_id: 736609738, column_id: "name", column_value: "' + this.$root.jobNum + '", state: active) {id name}}';
       fetch("https://api.monday.com/v2", {
@@ -257,12 +270,10 @@ export default {
             // if the status changs,update status to worflowmax.
             if(this.$root.statuSelected != this.statuSelected){
 
-
-
             }
           }else{
             //If the jobNum exist on monday.com, update the job detail on monday.com
-            this.updateStatus()
+            this.updateToMonday()
             this.userMassage = "Updated the item on Monday"
 
             // if the status changs,update status to worflowmax.
@@ -276,6 +287,8 @@ export default {
 
       this.$root.statuSelected = this.statuSelected
       this.$root.DHFstatuSelected = this.DHFstatuSelected
+
+
     },
 
 

@@ -17,6 +17,7 @@ new Vue({
       patient: '',
       statuSelected: '',
       DHFstatuSelected: '',
+      dhfStatusUUID:'',
       dateOfBirth: '',
       device: '',
       anatomy: '',
