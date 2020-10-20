@@ -3,10 +3,13 @@
 
   <div class="searchBar">
     <label>Job Number:</label>
-    <input v-model="searchNum" class="inputBox form-control" type="text" placeholder="Enter job number">
+    <input v-model="searchNum" @keyup="checkEnterNum" @keyup.enter="keyEnterCheck" class="inputBox form-control" type="text" placeholder="Enter job number">
+
     <input type="button" value="Search" @click="searchJob" class="searchBtn btn btn-primary">
+
   </div>
-  <!-- <p>{{info}}</p> -->
+  <p class="errerInfo">{{info}}</p>
+
   <table class="jobTable table table-bordered">
     <thead>
       <tr>
@@ -20,7 +23,7 @@
     <tbody>
       <tr>
         <td>
-          <router-link to="/jobdetail"> {{this.$root.jobNum}}</router-link>
+          <router-link to="/jobdetail">{{this.$root.jobNum}}</router-link>
         </td>
         <td>{{this.$root.client}}</td>
         <td>{{this.$root.patient}}</td>
@@ -91,16 +94,31 @@ export default {
       searchNum: '',
       statuSelected: this.$root.statuSelected,
       DHFstatuSelected: this.$root.DHFstatuSelected,
-      mondayAuthor: '',
+      mondayAuthor: 'eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjc4MTY5MzcwLCJ1aWQiOjE1NjM4NDA4LCJpYWQiOiIyMDIwLTA5LTEwVDIxOjE0OjMwLjAwMFoiLCJwZXIiOiJtZTp3cml0ZSJ9.JrO-C3NiSJ-vLhmCg0v1N4muBxiYH-wRSTDIWXxgibA',
       info: '',
+      jobExistInfo:'',
       userMassage:'',
       jobId:''
     }
   },
 
   methods: {
+    checkEnterNum(){
+      if(isNaN(this.searchNum)){
+        this.info = "Please enter a job number."
+      }else{
+        this.info = ""
+      }
+    },
+
+    keyEnterCheck(){
+      if(this.info==""){
+        this.searchJob()
+      }
+    },
     searchJob() {
       //send request to back-end with search job number
+
       let requestUrl="http://localhost/api/test?jobId=" + this.searchNum
 
       fetch(requestUrl)
@@ -129,7 +147,9 @@ export default {
     },
 
     creatItemToMonday() {
-      //Creat item to Monday
+
+//----------------------------------------------------------------------------------------------------------
+      // Creat item to Monday
       let query5 = 'mutation ($myItemName: String!, $columnVals: JSON!) { create_item (board_id: 736609738,item_name:$myItemName, column_values:$columnVals) { id } }';
       let vars = {
         "myItemName": this.$root.jobNum,
@@ -170,9 +190,12 @@ export default {
         })
         .then(res => res.json())
         .then(res => console.log(JSON.stringify(res, null, 2)))
+
     },
 
     updateToMonday() {
+
+//---------------------------------------------------------------------------------------------------------------
       let query1 = '{ items_by_column_values(board_id: 736609738, column_id: "name", column_value: "' + this.$root.jobNum + '", state: active) {id}}';
       fetch("https://api.monday.com/v2", {
           method: 'post',
@@ -229,19 +252,30 @@ export default {
               .then(res => res.json())
               .then(res => console.log(JSON.stringify(res, null, 2)));
         })
-      },
 
-      updateToWM(){
-        let requestUrl="http://localhost/api/update?jobId=" + this.searchNum +"&Status="+this.statuSelected+"&DHFStatus="+this.DHFstatuSelected+"&dhfStatusUUID="+this.$root.dhfStatusUUID
 
-          // let requestUrl ="http://localhost/api/update?jobId=60550&Status=test&DHFStatus=test2"
-        fetch(requestUrl)
-        .then(res =>console.log(res))
-        // .then(res => console.log(JSON.stringify(res, null, 2)));
-      },
+    },
+
+    searchJobInMonday() {
+
+      let requestUrl = "http://localhost/api/sarchjob?jobId=" + this.searchNum
+      fetch(requestUrl)
+      .then(res =>console.log(res))
+
+    },
+
+    updateToWM(){
+      let requestUrl="http://localhost/api/update?jobId=" + this.searchNum +"&Status="+this.statuSelected+"&DHFStatus="+this.DHFstatuSelected+"&dhfStatusUUID="+this.$root.dhfStatusUUID
+
+        // let requestUrl ="http://localhost/api/update?jobId=60550&Status=test&DHFStatus=test2"
+      fetch(requestUrl)
+      .then(res =>console.log(res))
+      // .then(res => console.log(JSON.stringify(res, null, 2)));
+    },
 
 
     syncToMonday() {
+      // this.searchJobInMonday()
       this.updateToWM()
 
 
@@ -260,10 +294,12 @@ export default {
         .then(res => res.json())
         .then(res => {
         //if the length==1,means the id is exist.if length==0, means the id is not exist.
-          this.info = res.data.items_by_column_values.length
+          this.jobExistInfo = res.data.items_by_column_values.length
+          console.log(res)
+          console.log(res.data)
 
-          //if the jobNum not exist on monday.com
-          if(this.info == 0){
+          // if the jobNum not exist on monday.com
+          if(this.jobExistInfo == 0){
             //create a new item on monday
             this.creatItemToMonday()
             this.userMassage = "Created a new item on Monday"
@@ -377,6 +413,12 @@ export default {
 .searchBar {
   display: flex;
   padding-left: 10%;
+}
+.errerInfo{
+
+  text-align:left;
+  color:red;
+  padding-left: 18%;
 }
 
 label {

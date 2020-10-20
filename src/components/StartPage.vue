@@ -12,26 +12,21 @@ export default {
     document.body.className = 'startPage';
   },
 
-  data(){
-    return{
-      workflowMaxAuth:""
+  data() {
+    return {
+      workflowMaxAuth: ""
     }
   },
 
   methods: {
+
     linkToMain() {
-      //send token request to back-enabled
 
-      //recive token and store
-      //link to main page
-    // this.$router.push({ name: 'MainPage' })
-
-    window.location = 'http://localhost/authorization.php'
+      window.location = 'http://localhost/authorization'
     }
   }
 
-  }
-
+}
 </script>
 
 <style scoped>

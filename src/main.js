@@ -4,6 +4,9 @@ import router from './router'
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
+import VueCookies from 'vue-cookies'
+Vue.use(VueCookies)
+
 
 //main.js
 
