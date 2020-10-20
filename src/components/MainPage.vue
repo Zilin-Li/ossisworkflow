@@ -95,7 +95,7 @@ export default {
       searchNum: '',
       statuSelected: this.$root.statuSelected,
       DHFstatuSelected: this.$root.DHFstatuSelected,
-      mondayAuthor: 'eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjc4MTY5MzcwLCJ1aWQiOjE1NjM4NDA4LCJpYWQiOiIyMDIwLTA5LTEwVDIxOjE0OjMwLjAwMFoiLCJwZXIiOiJtZTp3cml0ZSJ9.JrO-C3NiSJ-vLhmCg0v1N4muBxiYH-wRSTDIWXxgibA',
+      mondayAuthor: 'eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjg4NTU2NDUyLCJ1aWQiOjE1NjM4NDA4LCJpYWQiOiIyMDIwLTEwLTIwVDA5OjI5OjU3LjAwMFoiLCJwZXIiOiJtZTp3cml0ZSJ9.bANhijIapL0RxDFeNtniWt8_xtDIeIWHAyJq0FUyU3M',
       info: '',
       jobExistInfo:'',
       userMassage:'',
@@ -151,7 +151,7 @@ export default {
           this.errorMsg =""
         }
         else if (res.status =="ERROR"){
-          this.errorMsg ="Invalid job identifier"
+          this.errorMsg =res.description
         }
 
 
