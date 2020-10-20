@@ -8,7 +8,8 @@
     <input type="button" value="Search" @click="searchJob" class="searchBtn btn btn-primary">
 
   </div>
-  <p class="errerInfo">{{info}}</p>
+  <p v-show="isShow" class="errerInfo"> "Please enter a job number."</p>
+  <p class="errerInfo"> {{errorMsg}}</p>
 
   <table class="jobTable table table-bordered">
     <thead>
@@ -98,52 +99,68 @@ export default {
       info: '',
       jobExistInfo:'',
       userMassage:'',
-      jobId:''
+      jobId:'',
+      isShow: false,
+      statusRespons:'',
+      errorMsg:''
     }
   },
 
   methods: {
     checkEnterNum(){
+      this.errorMsg =""
       if(isNaN(this.searchNum)){
-        this.info = "Please enter a job number."
+        this.isShow = true
       }else{
-        this.info = ""
+        this.isShow = false
+
       }
     },
 
     keyEnterCheck(){
-      if(this.info==""){
         this.searchJob()
-      }
     },
     searchJob() {
       //send request to back-end with search job number
+      // this.checkEnterNum()
+      if(this.isShow==true){
+        return
+      }
 
-      let requestUrl="http://localhost/api/test?jobId=" + this.searchNum
+      let requestUrl="http://localhost/api/searchjobonwm?jobId=" + this.searchNum
 
       fetch(requestUrl)
       //if jobNum exist in worflow max, get job detail in JSON. format
       .then(res =>res.json())
       //Assign values to global variables
       .then(res => {
-        this.$root.jobNum=res.jobId
-        this.$root.client =res.client
-        this.statuSelected = this.$root.statuSelected =res.state
-        this.DHFstatuSelected = this.$root.DHFstatuSelected=res.DHFStatus
-        this.$root.patient =res.patienName
-        this.$root.dateOfBirth = res.dateOfBirth
-        this.$root.device = res.deviceType
-        this.$root.anatomy = res.anatomy
-        this.$root.pathology = res.pathology
-        this.$root.sApproach = res.surgicalApproach
-        this.$root.hospital = res.hospital
-        this.$root.sDate = res.surgeryDate
-        this.$root.dhfStatusUUID =res.DHFStatusUUID
+        if(res.status =="OK"){
+          this.$root.jobNum=res.jobId
+          this.$root.client =res.client
+          this.statuSelected = this.$root.statuSelected =res.state
+          this.DHFstatuSelected = this.$root.DHFstatuSelected=res.DHFStatus
+          this.$root.patient =res.patienName
+          this.$root.dateOfBirth = res.dateOfBirth
+          this.$root.device = res.deviceType
+          this.$root.anatomy = res.anatomy
+          this.$root.pathology = res.pathology
+          this.$root.sApproach = res.surgicalApproach
+          this.$root.hospital = res.hospital
+          this.$root.sDate = res.surgeryDate
+          this.$root.dhfStatusUUID =res.DHFStatusUUID
+          this.errorMsg =""
+        }
+        else if (res.status =="ERROR"){
+          this.errorMsg ="Invalid job identifier"
+        }
+
+
       })
       //Display on user interface --- data test
       // this.displayJob();
 
       //If jobNum isnot exist in worflow max, through error massage
+
     },
 
     creatItemToMonday() {
