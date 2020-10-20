@@ -95,7 +95,7 @@ export default {
       searchNum: '',
       statuSelected: this.$root.statuSelected,
       DHFstatuSelected: this.$root.DHFstatuSelected,
-      mondayAuthor: 'eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjg4NTU2NDUyLCJ1aWQiOjE1NjM4NDA4LCJpYWQiOiIyMDIwLTEwLTIwVDA5OjI5OjU3LjAwMFoiLCJwZXIiOiJtZTp3cml0ZSJ9.bANhijIapL0RxDFeNtniWt8_xtDIeIWHAyJq0FUyU3M',
+      mondayAuthor: '',
       info: '',
       jobExistInfo:'',
       userMassage:'',
