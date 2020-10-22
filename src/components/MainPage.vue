@@ -169,7 +169,6 @@ export default {
     syncData() {
       this.$root.statuSelected = this.statuSelected
       this.$root.DHFstatuSelected = this.DHFstatuSelected
-
       var jobDetail = new Object()
 
       // jobDetail.jobId = this.$root.jobNum
@@ -196,7 +195,8 @@ export default {
       let requestUrl = "http://localhost/api/syncdata?jobId=" + this.$root.jobNum
         fetch(requestUrl,requestOptions)
           // .then(res => res.text())
-          .then(res => console.log(res))
+          .then(res => res.json())
+          .then(res =>{this.userMassage=res})
   }
 
   //   creatItemToMonday() {
