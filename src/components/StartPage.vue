@@ -21,11 +21,9 @@ export default {
   methods: {
 
     linkToMain() {
-
       window.location = 'http://localhost/authorization'
     }
   }
-
 }
 </script>
 

@@ -12,7 +12,7 @@
     </thead>
     <tbody>
       <tr>
-        <td>Job No.</td>
+        <td>Job ID</td>
         <td>{{this.$root.jobNum}}</td>
 
       </tr>
@@ -25,7 +25,7 @@
         <td>{{this.$root.patient}}</td>
       </tr>
       <tr>
-        <td>Patient DOB</td>
+        <td>Date Of Birth</td>
         <td>{{this.$root.dateOfBirth}}</td>
       </tr>
       <tr>
@@ -72,13 +72,6 @@ export default {
   beforeCreate: function() {
     document.body.className = 'detailPage'
   }
-  // methods: {
-  //   searchJob() {
-  //     this.displayJob();
-  //
-  //
-  //   }
-  // }
 
 }
 </script>

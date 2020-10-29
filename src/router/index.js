@@ -15,8 +15,7 @@ const routes = [{
   {
     path: '/mainpage',
     name: 'MainPage',
-    component: MainPage
-    // component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    component: MainPage  
   },
   {
       path: '/jobdetail',
