@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
-import MainPage from '../views/Main.vue'
-import JobDetail from '../views/Detail.vue'
+import Home from '../views/HomePage.vue'
+import MainPage from '../views/MainPage.vue'
+import JobDetail from '../views/DetailPage.vue'
 
 Vue.use(VueRouter)
 
@@ -15,7 +15,7 @@ const routes = [{
   {
     path: '/mainpage',
     name: 'MainPage',
-    component: MainPage  
+    component: MainPage
   },
   {
       path: '/jobdetail',

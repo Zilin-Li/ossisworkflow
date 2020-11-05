@@ -1,99 +1,70 @@
 <template>
 <div class="mainPage">
+  <Header />
+  <div class="main">
+    <div class="searchBar">
+      <label>Job ID:</label>
+      <input v-model="searchNum" @keyup="checkEnterNum" @keyup.enter="keyEnterCheck" class="inputBox form-control" type="text" placeholder="Please enter a job ID">
+      <input type="button" value="Search" @click="searchJob" class="searchBtn btn btn-primary">
+    </div>
+    <p v-show="isShow" class="errerInfo"> "Invalid input. Please enter a number."</p>
+    <p class="errerInfo"> {{errorMsg}}</p>
+    <table class="jobTable table table-bordered">
+      <thead>
+        <tr>
+          <th>Job ID</th>
+          <th>Client</th>
+          <th>Patient Name</th>
+          <th>Status</th>
+          <th>DHF Status</th>
+        </tr>
+      </thead>
 
-  <div class="searchBar">
-    <label>Job ID:</label>
-    <input v-model="searchNum" @keyup="checkEnterNum" @keyup.enter="keyEnterCheck" class="inputBox form-control" type="text" placeholder="Please enter a job ID">
+      <tbody>
+        <tr>
+          <td>
+            <router-link to="/jobdetail">{{this.$root.jobNum}}</router-link>
+          </td>
+          <td>{{this.$root.client}}</td>
+          <td>{{this.$root.patient}}</td>
+          <td>
+            <select v-model="statuSelected" class="form-control">
+              <option v-for="(item, index) in stateOptions">
+                {{ item }}
+              </option>
+            </select>
+          </td>
+          <td>
+            <select v-model="DHFstatuSelected" class="form-control">
+              <option v-for="(item, index) in dhfStatusOptions">
+                {{ item }}
+              </option>
+            </select>
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
-    <input type="button" value="Search" @click="searchJob" class="searchBtn btn btn-primary">
+    <p>{{userMassage}}</p>
+
+    <div class="btnOptions">
+      <input type="button" value="Synchronization" @click="syncData" class="syncBtn btn btn-primary">
+    </div>
 
   </div>
-
-  <p v-show="isShow" class="errerInfo"> "Invalid input. Please enter a number."</p>
-  <p class="errerInfo"> {{errorMsg}}</p>
-
-  <table class="jobTable table table-bordered">
-
-    <thead>
-      <tr>
-        <th>Job ID</th>
-        <th>Client</th>
-        <th>Patient Name</th>
-        <th>Status</th>
-        <th>DHF Status</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <tr>
-        <td>
-          <router-link to="/jobdetail">{{this.$root.jobNum}}</router-link>
-        </td>
-        <td>{{this.$root.client}}</td>
-        <td>{{this.$root.patient}}</td>
-        <td>
-          <select v-model="statuSelected" class="form-control">
-            <option>Awaiting Scans/Prescription Form</option>
-            <option>Segmentation</option>
-            <option>Design</option>
-            <option>Design Review</option>
-            <option>Design Sign Off</option>
-            <option>Awaiting Funding</option>
-            <option>Manufacturing</option>
-            <option>Machining</option>
-            <option>Cleaning</option>
-            <option>Coating</option>
-            <option>At OSSIS</option>
-            <option>Shipped</option>
-            <option>At Hospital</option>
-            <option>Awaiting Post-Op</option>
-            <option>Awaiting Payment</option>
-            <option>On Hold</option>
-            <option>Cancelled</option>
-            <option>Invoiced</option>
-            <option>Completed - Pelvis Implants</option>
-            <option>Completed(Other)</option>
-          </select>
-        </td>
-        <td>
-          <select v-model="DHFstatuSelected" class="form-control">
-            <option> </option>
-            <option>Section 1 For Review</option>
-            <option>Section 2 For Review</option>
-            <option>Section 3 For Review</option>
-            <option>Section 4 For Review</option>
-            <option>Section 5 For Review</option>
-            <option>Section 1 In Progress</option>
-            <option>Section 2 In Progress</option>
-            <option>Section 3 In Progress</option>
-            <option>Section 4 In Progress</option>
-            <option>Section 5 In Progress</option>
-            <option>Section 1 Complete</option>
-            <option>Section 2 Complete</option>
-            <option>Section 3 Complete</option>
-            <option>Section 4 Complete</option>
-            <option>Section 5 Complete</option>
-            <option>Ready For Scanning</option>
-          </select>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
-  <p>{{userMassage}}</p>
-
-  <div class="btnOptions">
-    <input type="button" value="Synchronization"  @click="syncData" class="syncBtn btn btn-primary">
-  </div>
-
 </div>
 </template>
 
-
 <script>
+import Header from '@/components/Header.vue'
+
 export default {
+  name: 'Main',
   beforeCreate: function() {
     document.body.className = 'mainPage';
+  },
+  components: {
+    Header
   },
   data() {
     return {
@@ -105,18 +76,59 @@ export default {
       userMassage: '',
       jobId: '',
       isShow: false,
-
-      errorMsg: ''
+      errorMsg: '',
+      stateOptions: [
+        // these options can be get from backend in next step
+        'Awaiting Scans/Prescription Form',
+        'Segmentation',
+        'Design',
+        'Design Review',
+        'Design Sign Off',
+        'Awaiting Funding',
+        'Manufacturing',
+        'Machining',
+        'Cleaning',
+        'Coating',
+        'At OSSIS',
+        'Shipped',
+        'At Hospital',
+        'Awaiting Post-Op',
+        'Awaiting Payment',
+        'On Hold',
+        'Cancelled',
+        'Invoiced',
+        'Completed - Pelvis Implants',
+        'Completed(Other)',
+      ],
+      dhfStatusOptions: [
+        // these options can be get from backend in next step
+        ' ',
+        'Section 1 For Review',
+        'Section 2 For Review',
+        'Section 3 For Review',
+        'Section 4 For Review',
+        'Section 5 For Review',
+        'Section 1 In Progress',
+        'Section 2 In Progress',
+        'Section 3 In Progress',
+        'Section 4 In Progress',
+        'Section 5 In Progress',
+        'Section 1 Complete',
+        'Section 2 Complete',
+        'Section 3 Complete',
+        'Section 4 Complete',
+        'Section 5 Complete',
+        'Ready For Scanning',
+      ]
     }
   },
-
   methods: {
     // This function checks if the user input is a number
     // If input is not a number, prompts the user to change.
     // If input is a number,return true.And vice versa.
     checkEnterNum() {
       this.errorMsg = ""
-      this.userMassage=""
+      this.userMassage = ""
       if (isNaN(this.searchNum)) {
         this.isShow = true
         return false
@@ -134,13 +146,11 @@ export default {
     // When user click Search button, send the search number to backend.
     // Receives a response in JSON format
     searchJob() {
-      this.userMassage=""
+      this.userMassage = ""
       // If the input is not a number, the search function does not perform.
       if (!this.checkEnterNum()) {
         return
       }
-      // this.$root.jobNum = this.searchNum
-
       let requestUrl = "http://localhost/api/searchjob?jobId=" + this.searchNum
       fetch(requestUrl)
         .then(res => res.json())
@@ -162,14 +172,13 @@ export default {
             this.$root.sDate = res.surgeryDate
             this.$root.dhfStatusUUID = res.DHFStatusUUID
             this.errorMsg = ""
-
           }
           // If status is "ERROR", means the job number is not exist in Workflow Max
           // Retrun the error description.
           else if (res.status == "ERROR") {
             this.errorMsg = res.description
 
-          }else if (res.status == "Unauthorized"){
+          } else if (res.status == "Unauthorized") {
             window.location = 'http://localhost/authorization'
           }
         })
@@ -203,32 +212,38 @@ export default {
           // body: JSON.stringify({ title: "Vue POST Request Example" })
           body: JSON.stringify(jobDetail)
         };
-
         let requestUrl = "http://localhost/api/syncdata?jobId=" + this.$root.jobNum
         fetch(requestUrl, requestOptions)
           // .then(res => res.text())
           .then(res => res.json())
           .then(res => {
-            if(res.status== "Unauthorized"){
+            if (res.status == "Unauthorized") {
               window.location = 'http://localhost/authorization'
 
-            }else{
-              this.userMassage =res.description
+            } else {
+              this.userMassage = res.description
             }
           })
-
-      }else{
-          this.isShow = true
+      } else {
+        this.isShow = true
       }
     }
-
   }
 }
 </script>
 
 <style scoped>
 .mainPage {
+  height: 100%;
+  /* font-family: Helvetica, Arial, "Lucida Family", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #E8E8E8; */
+}
+
+.main {
   padding: 5%;
+
   text-align: center;
   height: 100%;
   font-weight: bold;
@@ -267,7 +282,7 @@ table {
   padding-top: 2%;
 }
 
-.syncBtn{
+.syncBtn {
   width: 20%;
 }
 

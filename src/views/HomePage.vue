@@ -1,15 +1,24 @@
 <template>
-<div class="startPage">
-  <h1>OSSIS WORKFLOW INTERGRATION SYSTEM</h1>
-  <input type="button" value="Start" @click="linkToMain" class="getToken btn btn-light btn-lg">
+<div class="home">
+  <Header/>
+  <div class="startPage">
+    <h1>OSSIS WORKFLOW INTERGRATION SYSTEM</h1>
+    <input type="button" value="Start" @click="linkToMain" class="getToken btn btn-light btn-lg">
+  </div>
+
 </div>
 </template>
 
-
 <script>
+import Header from '@/components/Header.vue'
 export default {
+  name: 'Home',
   beforeCreate: function() {
     document.body.className = 'startPage';
+  },
+
+  components: {
+    Header
   },
 
   data() {
@@ -27,7 +36,16 @@ export default {
 }
 </script>
 
+
 <style scoped>
+.home {
+  height: 100%;
+  /* font-family: Helvetica, Arial, "Lucida Family", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #559CB5; */
+}
+
 .startPage {
   text-align: center;
   height: 100%;
