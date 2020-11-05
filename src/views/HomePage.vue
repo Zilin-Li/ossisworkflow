@@ -31,6 +31,7 @@ export default {
 
     linkToMain() {
       window.location = 'http://localhost/authorization'
+      // window.location = 'https://ossisserver.willin.xyz/authorization'
     }
   }
 }

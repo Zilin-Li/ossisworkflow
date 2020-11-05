@@ -45,10 +45,14 @@
       </tbody>
     </table>
 
-    <p>{{userMassage}}</p>
+    <p v-show ="massageShow">{{userMassage}}</p>
 
     <div class="btnOptions">
-      <input type="button" value="Synchronization" @click="syncData" class="syncBtn btn btn-primary">
+      <!-- <input type="button" value="Synchronization" @click="syncData" class="syncBtn btn btn-primary"> -->
+
+      <button class="syncBtn btn btn-primary" @click="syncData" :disabled="canClick">
+        {{content}}
+      </button>
     </div>
 
   </div>
@@ -68,6 +72,10 @@ export default {
   },
   data() {
     return {
+      massageShow:false,
+      content: 'Synchronization',
+      totalTime: 5,
+      canClick: false,
       searchNum: '',
       statuSelected: this.$root.statuSelected,
       DHFstatuSelected: this.$root.DHFstatuSelected,
@@ -123,6 +131,25 @@ export default {
     }
   },
   methods: {
+
+    countDown() {
+      this.massageShow=false
+      if (this.canClick) return
+      this.canClick = true
+      this.content = 'Updating... ( '+ this.totalTime + 's)'
+      let clock = window.setInterval(() => {
+        this.totalTime--
+        this.content = 'Updating... ( '+ this.totalTime + 's)'
+        if (this.totalTime < 1) {
+          window.clearInterval(clock)
+          this.content = 'Synchronization'
+          this.totalTime = 5
+          this.canClick = false
+          this.massageShow=true
+        }
+      }, 1000)
+    },
+
     // This function checks if the user input is a number
     // If input is not a number, prompts the user to change.
     // If input is a number,return true.And vice versa.
@@ -152,6 +179,7 @@ export default {
         return
       }
       let requestUrl = "http://localhost/api/searchjob?jobId=" + this.searchNum
+      // let requestUrl = "https://ossisserver.willin.xyz/api/searchjob?jobId=" + this.searchNum
       fetch(requestUrl)
         .then(res => res.json())
         .then(res => {
@@ -180,11 +208,13 @@ export default {
 
           } else if (res.status == "Unauthorized") {
             window.location = 'http://localhost/authorization'
+            // window.location = 'https://ossisserver.willin.xyz/authorization'
           }
         })
     },
 
     syncData() {
+
       this.$root.statuSelected = this.statuSelected
       this.$root.DHFstatuSelected = this.DHFstatuSelected
       var jobDetail = new Object()
@@ -213,12 +243,14 @@ export default {
           body: JSON.stringify(jobDetail)
         };
         let requestUrl = "http://localhost/api/syncdata?jobId=" + this.$root.jobNum
+        // let requestUrl = "https://ossisserver.willin.xyz/api/syncdata?jobId=" + this.$root.jobNum
         fetch(requestUrl, requestOptions)
           // .then(res => res.text())
           .then(res => res.json())
           .then(res => {
             if (res.status == "Unauthorized") {
               window.location = 'http://localhost/authorization'
+              // window.location = 'https://ossisserver.willin.xyz/authorization'
 
             } else {
               this.userMassage = res.description
@@ -227,6 +259,7 @@ export default {
       } else {
         this.isShow = true
       }
+        this.countDown()
     }
   }
 }
@@ -243,7 +276,6 @@ export default {
 
 .main {
   padding: 5%;
-
   text-align: center;
   height: 100%;
   font-weight: bold;
@@ -255,7 +287,6 @@ export default {
 }
 
 .errerInfo {
-
   text-align: left;
   color: red;
   padding-left: 18%;
