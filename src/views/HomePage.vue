@@ -16,21 +16,18 @@ export default {
   beforeCreate: function() {
     document.body.className = 'startPage';
   },
-
   components: {
     Header
   },
-
   data() {
     return {
       workflowMaxAuth: ""
     }
   },
-
   methods: {
 
     linkToMain() {
-      window.location = 'http://localhost/authorization'
+      window.location = this.$root.severDomain + '/authorization'
       // window.location = 'https://ossisserver.willin.xyz/authorization'
     }
   }

@@ -54,11 +54,11 @@
         </tr>
         <tr>
           <td>Status</td>
-          <td>{{this.$root.statuSelected}}</td>
+          <td>{{this.$root.statusSelected}}</td>
         </tr>
         <tr>
           <td>DHF Status</td>
-          <td>{{this.$root.DHFstatuSelected}}</td>
+          <td>{{this.$root.DHFstatusSelected}}</td>
         </tr>
       </tbody>
     </table>

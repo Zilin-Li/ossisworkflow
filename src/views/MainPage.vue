@@ -4,11 +4,11 @@
   <div class="main">
     <div class="searchBar">
       <label>Job ID:</label>
-      <input v-model="searchNum" @keyup="checkEnterNum" @keyup.enter="keyEnterCheck" class="inputBox form-control" type="text" placeholder="Please enter a job ID">
+      <input v-model="searchNum" @keyup="checkEnterNum" @keyup.enter="searchJob" class="inputBox form-control" type="text" placeholder="Please enter a job ID">
       <input type="button" value="Search" @click="searchJob" class="searchBtn btn btn-primary">
     </div>
-    <p v-show="isShow" class="errerInfo"> "Invalid input. Please enter a number."</p>
-    <p class="errerInfo"> {{errorMsg}}</p>
+    <p v-if="isShow" class="errorInfo hint1"> {{errorMsg}}</p>
+
     <table class="jobTable table table-bordered">
       <thead>
         <tr>
@@ -28,16 +28,16 @@
           <td>{{this.$root.client}}</td>
           <td>{{this.$root.patient}}</td>
           <td>
-            <select v-model="statuSelected" class="form-control">
-              <option v-for="(item, index) in stateOptions">
-                {{ item }}
+            <select v-model="statusSelected" class="form-control">
+              <option v-for="(item1, index) in statusOptions " :key="item1.option">
+                {{ item1.option }}
               </option>
             </select>
           </td>
           <td>
-            <select v-model="DHFstatuSelected" class="form-control">
-              <option v-for="(item, index) in dhfStatusOptions">
-                {{ item }}
+            <select v-model="DHFstatusSelected" class="form-control">
+              <option v-for="(item2, index) in dhfStatusOptions" :key="item2.option">
+                {{ item2.option }}
               </option>
             </select>
           </td>
@@ -45,12 +45,17 @@
       </tbody>
     </table>
 
-    <p v-show ="massageShow">{{userMassage}}</p>
+    <p class="hint2" v-show="messageShow">{{userMessage}}</p>
+    <div class="waitingDot" v-show = "dotShow">
+      <div class="dots"></div>
+      <div class="dots"></div>
+      <div class="dots"></div>
+      <div class="dots"></div>
+      <div class="dots"></div>
+    </div>
 
     <div class="btnOptions">
-      <!-- <input type="button" value="Synchronization" @click="syncData" class="syncBtn btn btn-primary"> -->
-
-      <button class="syncBtn btn btn-primary" @click="syncData" :disabled="canClick">
+      <button class="syncBtn btn btn-primary" @click="syncData">
         {{content}}
       </button>
     </div>
@@ -72,91 +77,147 @@ export default {
   },
   data() {
     return {
-      massageShow:false,
-      content: 'Synchronization',
-      totalTime: 5,
-      canClick: false,
-      searchNum: '',
-      statuSelected: this.$root.statuSelected,
-      DHFstatuSelected: this.$root.DHFstatuSelected,
-      mondayAuthor: '',
-      jobExistInfo: '',
-      userMassage: '',
-      jobId: '',
-      isShow: false,
-      errorMsg: '',
-      stateOptions: [
+      statusOptions: [
         // these options can be get from backend in next step
-        'Awaiting Scans/Prescription Form',
-        'Segmentation',
-        'Design',
-        'Design Review',
-        'Design Sign Off',
-        'Awaiting Funding',
-        'Manufacturing',
-        'Machining',
-        'Cleaning',
-        'Coating',
-        'At OSSIS',
-        'Shipped',
-        'At Hospital',
-        'Awaiting Post-Op',
-        'Awaiting Payment',
-        'On Hold',
-        'Cancelled',
-        'Invoiced',
-        'Completed - Pelvis Implants',
-        'Completed(Other)',
+        {
+          option: 'Awaiting Scans/Prescription Form'
+        },
+        {
+          option: 'Segmentation'
+        },
+        {
+          option: 'Design'
+        },
+        {
+          option: 'Design Review'
+        },
+        {
+          option: 'Design Sign Off'
+        },
+        {
+          option: 'Awaiting Funding'
+        },
+        {
+          option: 'Manufacturing'
+        },
+        {
+          option: 'Machining'
+        },
+        {
+          option: 'Cleaning'
+        },
+        {
+          option: 'Coating'
+        },
+        {
+          option: 'At OSSIS'
+        },
+        {
+          option: 'Shipped'
+        },
+        {
+          option: 'At Hospital'
+        },
+        {
+          option: 'Awaiting Post-Op'
+        },
+        {
+          option: 'Awaiting Payment'
+        },
+        {
+          option: 'On Hold'
+        },
+        {
+          option: 'Cancelled'
+        },
+        {
+          option: 'Invoiced'
+        },
+        {
+          option: 'Completed - Pelvis Implants'
+        },
+        {
+          option: 'Completed(Other)'
+        },
       ],
       dhfStatusOptions: [
         // these options can be get from backend in next step
-        ' ',
-        'Section 1 For Review',
-        'Section 2 For Review',
-        'Section 3 For Review',
-        'Section 4 For Review',
-        'Section 5 For Review',
-        'Section 1 In Progress',
-        'Section 2 In Progress',
-        'Section 3 In Progress',
-        'Section 4 In Progress',
-        'Section 5 In Progress',
-        'Section 1 Complete',
-        'Section 2 Complete',
-        'Section 3 Complete',
-        'Section 4 Complete',
-        'Section 5 Complete',
-        'Ready For Scanning',
-      ]
+        {
+          option: ' '
+        },
+        {
+          option: 'Section 1 For Review'
+        },
+        {
+          option: 'Section 2 For Review'
+        },
+        {
+          option: 'Section 3 For Review'
+        },
+        {
+          option: 'Section 4 For Review'
+        },
+        {
+          option: 'Section 5 For Review'
+        },
+        {
+          option: 'Section 1 In Progress'
+        },
+        {
+          option: 'Section 2 In Progress'
+        },
+        {
+          option: 'Section 3 In Progress'
+        },
+        {
+          option: 'Section 4 In Progress'
+        },
+        {
+          option: 'Section 5 In Progress'
+        },
+        {
+          option: 'Section 1 Complete'
+        },
+        {
+          option: 'Section 2 Complete'
+        },
+        {
+          option: 'Section 3 Complete'
+        },
+        {
+          option: 'Section 4 Complete'
+        },
+        {
+          option: 'Section 5 Complete'
+        },
+        {
+          option: 'Ready For Scanning'
+        },
+      ],
+      sycnCount: 0,
+      messageShow: false,
+      userMessage: '',
+      content: 'Synchronization',
+      totalTime: 5,
+      searchNum: '',
+      statusSelected: this.$root.statusSelected,
+      DHFstatusSelected: this.$root.DHFstatusSelected,
+      mondayAuthor: '',
+      jobExistInfo: '',
+      jobId: '',
+      isShow: false,
+      errorMsg: '',
+      dotShow: false
     }
   },
   methods: {
-
-    countDown() {
-      this.massageShow=false
-      if (this.canClick) return
-      this.canClick = true
-      this.content = 'Updating... ( '+ this.totalTime + 's)'
-      let clock = window.setInterval(() => {
-        this.totalTime--
-        this.content = 'Updating... ( '+ this.totalTime + 's)'
-        if (this.totalTime < 1) {
-          window.clearInterval(clock)
-          this.content = 'Synchronization'
-          this.totalTime = 5
-          this.canClick = false
-          this.massageShow=true
-        }
-      }, 1000)
-    },
-
-    // This function checks if the user input is a number
-    // If input is not a number, prompts the user to change.
-    // If input is a number,return true.And vice versa.
+    //Check the format of job id.
     checkEnterNum() {
       this.errorMsg = ""
-      this.userMassage = ""
+      this.userMessage = ""
+
       if (isNaN(this.searchNum)) {
+        this.errorMsg = "Invalid input. Please enter a number."
         this.isShow = true
         return false
       } else {
@@ -165,20 +226,16 @@ export default {
       }
     },
 
-    //When the user use the Enter key, the 'searchJob' functions are automatically performed
-    keyEnterCheck() {
-      this.searchJob()
-    },
-
     // When user click Search button, send the search number to backend.
     // Receives a response in JSON format
     searchJob() {
-      this.userMassage = ""
+      this.userMessage = ""
+      this.sycnCount = 0
       // If the input is not a number, the search function does not perform.
       if (!this.checkEnterNum()) {
         return
       }
-      let requestUrl = "http://localhost/api/searchjob?jobId=" + this.searchNum
+      let requestUrl = this.$root.severDomain + '/api/searchjob?jobId=' + this.searchNum
       // let requestUrl = "https://ossisserver.willin.xyz/api/searchjob?jobId=" + this.searchNum
       fetch(requestUrl)
         .then(res => res.json())
@@ -188,8 +245,8 @@ export default {
           if (res.status == "OK") {
             this.$root.jobNum = res.jobId
             this.$root.client = res.client
-            this.statuSelected = this.$root.statuSelected = res.state
-            this.DHFstatuSelected = this.$root.DHFstatuSelected = res.DHFStatus
+            this.statusSelected = this.$root.statusSelected = res.state
+            this.DHFstatusSelected = this.$root.DHFstatusSelected = res.DHFStatus
             this.$root.patient = res.patienName
             this.$root.dateOfBirth = res.dateOfBirth
             this.$root.device = res.deviceType
@@ -205,61 +262,70 @@ export default {
           // Retrun the error description.
           else if (res.status == "ERROR") {
             this.errorMsg = res.description
+            this.isShow = true
 
           } else if (res.status == "Unauthorized") {
-            window.location = 'http://localhost/authorization'
+            window.location = this.$root.severDomain + '/authorization'
             // window.location = 'https://ossisserver.willin.xyz/authorization'
           }
         })
     },
 
     syncData() {
+      this.dotShow= true
+      this.messageShow = false
+      if (this.sycnCount == 0 || this.statusSelected != this.$root.statusSelected || this.DHFstatusSelected != this.$root.DHFstatusSelected) {
+        this.$root.statusSelected = this.statusSelected
+        this.$root.DHFstatusSelected = this.DHFstatusSelected
+        var jobDetail = new Object()
 
-      this.$root.statuSelected = this.statuSelected
-      this.$root.DHFstatuSelected = this.DHFstatuSelected
-      var jobDetail = new Object()
+        // jobDetail.jobId = this.$root.jobNum
+        jobDetail.state = this.$root.statusSelected
+        jobDetail.DHFStatus = this.$root.DHFstatusSelected
+        jobDetail.client = this.$root.client
+        jobDetail.patientName = this.$root.patient
+        jobDetail.dateOfBirth = this.$root.dateOfBirth
+        jobDetail.deviceType = this.$root.device
+        jobDetail.anatomy = this.$root.anatomy
+        jobDetail.pathology = this.$root.pathology
+        jobDetail.surgicalApproach = this.$root.sApproach
+        jobDetail.hospital = this.$root.hospital
+        jobDetail.surgeryDate = this.$root.sDate
+        jobDetail.DHFStatusUUID = this.$root.dhfStatusUUID
 
-      // jobDetail.jobId = this.$root.jobNum
-      jobDetail.state = this.$root.statuSelected
-      jobDetail.DHFStatus = this.$root.DHFstatuSelected
-      jobDetail.client = this.$root.client
-      jobDetail.patientName = this.$root.patient
-      jobDetail.dateOfBirth = this.$root.dateOfBirth
-      jobDetail.deviceType = this.$root.device
-      jobDetail.anatomy = this.$root.anatomy
-      jobDetail.pathology = this.$root.pathology
-      jobDetail.surgicalApproach = this.$root.sApproach
-      jobDetail.hospital = this.$root.hospital
-      jobDetail.surgeryDate = this.$root.sDate
-      jobDetail.DHFStatusUUID = this.$root.dhfStatusUUID
+        if (this.$root.jobNum != "") {
+          const requestOptions = {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(jobDetail)
+          };
+          let requestUrl =this.$root.severDomain + '/api/syncdata?jobId='+ this.$root.jobNum
+          // let requestUrl = "https://ossisserver.willin.xyz/api/syncdata?jobId=" + this.$root.jobNum
+          fetch(requestUrl, requestOptions)
+            .then(res => res.json())
+            .then(res => {
+              if (res.status == "Unauthorized") {
+                window.location = this.$root.severDomain +'/authorization'
+                // window.location = 'https://ossisserver.willin.xyz/authorization'
 
-      if (this.$root.jobNum != "") {
-        const requestOptions = {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          // body: JSON.stringify({ title: "Vue POST Request Example" })
-          body: JSON.stringify(jobDetail)
-        };
-        let requestUrl = "http://localhost/api/syncdata?jobId=" + this.$root.jobNum
-        // let requestUrl = "https://ossisserver.willin.xyz/api/syncdata?jobId=" + this.$root.jobNum
-        fetch(requestUrl, requestOptions)
-          // .then(res => res.text())
-          .then(res => res.json())
-          .then(res => {
-            if (res.status == "Unauthorized") {
-              window.location = 'http://localhost/authorization'
-              // window.location = 'https://ossisserver.willin.xyz/authorization'
+              } else {
+                this.messageShow = true
+                this.dotShow= false
+                this.userMessage = res.description
+              }
+            })
+          this.sycnCount++
+        } else {
+          this.isShow = true
+        }
 
-            } else {
-              this.userMassage = res.description
-            }
-          })
       } else {
-        this.isShow = true
+        this.messageShow = true
+        this.dotShow= false
+        this.userMessage = "The data has not changed, please do not repeat the submission."
       }
-        this.countDown()
     }
   }
 }
@@ -268,13 +334,10 @@ export default {
 <style scoped>
 .mainPage {
   height: 100%;
-  /* font-family: Helvetica, Arial, "Lucida Family", sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: #E8E8E8; */
 }
 
 .main {
+  position: relative;
   padding: 5%;
   text-align: center;
   height: 100%;
@@ -286,7 +349,7 @@ export default {
   padding-left: 10%;
 }
 
-.errerInfo {
+.errorInfo {
   text-align: left;
   color: red;
   padding-left: 18%;
@@ -322,4 +385,66 @@ table {
   border-radius: 25px;
   font-weight: bold;
 }
+
+.hint1,
+.hint2,
+.waitingDot {
+  position: absolute;
+
+}
+
+.hint2,.waitingDot {
+  margin-top: -2%;
+  width: 90%;
+}
+
+
+.dots{
+  height: 20px;
+  width:20px;
+  border-radius:50%;
+  /* background-color: white; */
+  display:inline-block;
+  margin:.5rem;
+  animation: scaling 2.5s ease-in-out infinite;
+}
+
+@keyframes scaling{
+  0%,100%{
+    transform:scale(0.2);
+    background-color:#30FFb7;
+  }
+  40%{
+    transform:scale(1);
+    background-color:#07deff;
+  }
+  50%{
+    transform:scale(1);
+    background-color:#0761ff;
+  }
+}
+
+.dots:nth-child(0){
+  animation-delay: 0s;
+
+}
+.dots:nth-child(1){
+  animation-delay: 0.2s;
+
+}
+.dots:nth-child(2){
+  animation-delay: 0.4s;
+
+}
+.dots:nth-child(3){
+  animation-delay: 0.6s;
+
+}
+.dots:nth-child(4){
+  animation-delay: 0.8s;
+}
+.dots:nth-child(5){
+  animation-delay: 1s;
+}
+
 </style>

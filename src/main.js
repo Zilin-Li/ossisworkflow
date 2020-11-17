@@ -14,8 +14,8 @@ new Vue({
       jobNum:'',
       client: '',
       patient: '',
-      statuSelected: '',
-      DHFstatuSelected: '',
+      statusSelected: '',
+      DHFstatusSelected: '',
       dhfStatusUUID:'',
       dateOfBirth: '',
       device: '',
@@ -23,7 +23,8 @@ new Vue({
       pathology: '',
       sApproach: '',
       hospital: '',
-      sDate: ''
+      sDate: '',
+      severDomain:'http://localhost'
     }
 
 
