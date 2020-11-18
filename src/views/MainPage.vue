@@ -215,6 +215,7 @@ export default {
     checkEnterNum() {
       this.errorMsg = ""
       this.userMessage = ""
+      this.dotShow= false
 
       if (isNaN(this.searchNum)) {
         this.errorMsg = "Invalid input. Please enter a number."
@@ -230,9 +231,10 @@ export default {
     // Receives a response in JSON format
     searchJob() {
       this.userMessage = ""
+      this.dotShow= false
       this.sycnCount = 0
       // If the input is not a number, the search function does not perform.
-      if (!this.checkEnterNum()) {
+      if (!this.checkEnterNum()||this.searchNum=="") {
         return
       }
       let requestUrl = this.$root.severDomain + '/api/searchjob?jobId=' + this.searchNum
@@ -272,9 +274,14 @@ export default {
     },
 
     syncData() {
+      if(this.$root.jobNum == ""){
+        return
+      }
       this.dotShow= true
+
       this.messageShow = false
       if (this.sycnCount == 0 || this.statusSelected != this.$root.statusSelected || this.DHFstatusSelected != this.$root.DHFstatusSelected) {
+
         this.$root.statusSelected = this.statusSelected
         this.$root.DHFstatusSelected = this.DHFstatusSelected
         var jobDetail = new Object()
