@@ -5,7 +5,7 @@
     <div class="searchBar">
       <label>Job ID:</label>
       <input v-model="searchNum" @keyup="checkEnterNum" @keyup.enter="searchJob" class="inputBox form-control" type="text" placeholder="Please enter a job ID">
-      <input type="button" value="Search" @click="searchJob" class="searchBtn btn btn-primary">
+      <input type="button" value="Search" @click="searchJob" class="searchBtn btn btn-primary" :disabled="isSearch">
     </div>
     <p v-if="isShow" class="errorInfo hint1"> {{errorMsg}}</p>
 
@@ -55,7 +55,7 @@
     </div>
 
     <div class="btnOptions">
-      <button class="syncBtn btn btn-primary" @click="syncData">
+      <button class="syncBtn btn btn-primary" @click="syncData" :disabled="isSync">
         {{content}}
       </button>
     </div>
@@ -137,7 +137,7 @@ export default {
           option: 'Completed - Pelvis Implants'
         },
         {
-          option: 'Completed(Other)'
+          option: 'Completed (Other)'
         },
       ],
       dhfStatusOptions: [
@@ -207,14 +207,16 @@ export default {
       jobId: '',
       isShow: false,
       errorMsg: '',
-      dotShow: false
+      dotShow: false,
+      isSearch:false,
+      isSync:false
     }
   },
   methods: {
     //Check the format of job id.
     checkEnterNum() {
       this.errorMsg = ""
-      this.userMessage = ""
+      // this.userMessage = ""
       this.dotShow= false
 
       if (isNaN(this.searchNum)) {
@@ -230,8 +232,10 @@ export default {
     // When user click Search button, send the search number to backend.
     // Receives a response in JSON format
     searchJob() {
+      if(this.isSearch)
+        return
       this.userMessage = ""
-      this.dotShow= false
+      // this.dotShow= false
       this.sycnCount = 0
       // If the input is not a number, the search function does not perform.
       if (!this.checkEnterNum()||this.searchNum=="") {
@@ -277,6 +281,8 @@ export default {
       if(this.$root.jobNum == ""){
         return
       }
+      this.isSearch=true
+      this.isSync=true
       this.dotShow= true
 
       this.messageShow = false
@@ -320,6 +326,8 @@ export default {
               } else {
                 this.messageShow = true
                 this.dotShow= false
+                this.isSearch=false
+                this.isSync=false
                 this.userMessage = res.description
               }
             })
@@ -331,6 +339,8 @@ export default {
       } else {
         this.messageShow = true
         this.dotShow= false
+        this.isSearch=false
+        this.isSync=false
         this.userMessage = "The data has not changed, please do not repeat the submission."
       }
     }
@@ -357,6 +367,7 @@ export default {
 }
 
 .errorInfo {
+  font-family: 'Cabin', sans-serif;
   text-align: left;
   color: red;
   padding-left: 18%;
@@ -397,6 +408,7 @@ table {
 .hint2,
 .waitingDot {
   position: absolute;
+  
 
 }
 
